@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,21 +12,27 @@ namespace Crunch
     {
         static void Main(string[] args)
         {
+            // ARGS 
+            // 0 - Num of primes (guideline 800000 for ~ 5mins)
+            // 1 - CSV filename to write to (it will place in the current dir)
+            // 2 - Name to tag this run with to correlate data
+
             if (args == null)
             {
                 Console.WriteLine("MISSING REQUIRED PARAMETERS! Stop being a dick lewis...");
                 System.Environment.Exit(1);
             }
 
-            Double numPrimes;
+            Double numPrimes;  //Suggest 800000 for ~ 5mins
+
             if(!Double.TryParse(args[0], out numPrimes))
             {
                 Console.WriteLine("MISSING prime numbers! Stop being a dick lewis...");
                 System.Environment.Exit(1);
             }
 
-            string filePath;
-            string runName;
+            string filePath = AppDomain.CurrentDomain.BaseDirectory + args[1];
+            string runName = args[2];
 
             Stopwatch timer = new Stopwatch();
 
@@ -39,7 +46,8 @@ namespace Crunch
             timer.Stop();
 
             Console.WriteLine("{0} primes takes {1} millis", args[0], timer.Elapsed.TotalMilliseconds);
-
+            String fileOutput = string.Format("\n{0},{1},{2}", runName, numPrimes, timer.Elapsed.TotalMilliseconds);
+            File.AppendAllText(filePath, fileOutput);
             Console.Read();
         }
 
@@ -49,11 +57,7 @@ namespace Crunch
 
             for (int i = 1, primeCounter = 0; primeCounter < numPrimes; i++)
             {
-                if (!IsPrime(i))
-                {
-                    continue;
-                }
-                else
+                if (IsPrime(i))
                 {
                     primeCounter++;
                     primeSum += i;
