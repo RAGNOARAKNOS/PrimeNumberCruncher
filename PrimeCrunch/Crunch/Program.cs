@@ -48,7 +48,6 @@ namespace Crunch
             Console.WriteLine("{0} primes takes {1} millis", args[0], timer.Elapsed.TotalMilliseconds);
             String fileOutput = string.Format("\n{0},{1},{2}", runName, numPrimes, timer.Elapsed.TotalMilliseconds);
             File.AppendAllText(filePath, fileOutput);
-            Console.Read();
         }
 
         static void CalculatePrimesSum(Double numPrimes)
