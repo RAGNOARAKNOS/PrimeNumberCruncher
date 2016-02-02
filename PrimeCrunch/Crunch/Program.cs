@@ -13,9 +13,10 @@ namespace Crunch
         static void Main(string[] args)
         {
             // ARGS 
-            // 0 - Num of primes (guideline 800000 for ~ 5mins)
+            // 0 - Num of primes (guideline 800000 for ~ 5mins per iteration)
             // 1 - CSV filename to write to (it will place in the current dir)
             // 2 - Name to tag this run with to correlate data
+            // 3 - How many iterations of test?
 
             if (args == null)
             {
@@ -33,7 +34,28 @@ namespace Crunch
 
             string filePath = AppDomain.CurrentDomain.BaseDirectory + args[1];
             string runName = args[2];
+            int iterations;
 
+            if (args[3] == null)
+            {
+                iterations = 1;
+            }
+            else
+            {
+                if(!int.TryParse(args[3], out iterations))
+                {
+                    iterations = 1;
+                }
+            }
+
+            for (int i = 0; i < iterations; i++)
+            {
+                RunCalculations(args, numPrimes, filePath, runName+"-" + i.ToString());
+            }
+        }
+
+        private static void RunCalculations(string[] args, Double numPrimes, string filePath, string runName)
+        {
             Stopwatch timer = new Stopwatch();
 
             if (Stopwatch.IsHighResolution)
